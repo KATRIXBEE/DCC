@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Sparkles, Droplets, Zap, ShieldAlert, Check, TrendingDown, ArrowUpRight } from 'lucide-react';
 import { ScrollSequenceSection } from '@/components/ScrollSequenceSection';
-import { Preloader } from '@/components/Preloader';
 import { Marquee } from '@/components/Marquee';
 import { GlitchButton } from '@/components/GlitchButton';
 import { B2BModal } from '@/components/B2BModal';
@@ -15,7 +14,28 @@ export default function HomePage() {
   const [loadProgress, setLoadProgress] = useState(0);
   const [isAssetsLoaded, setIsAssetsLoaded] = useState(false);
   const [b2bModalOpen, setB2bModalOpen] = useState(false);
+  const [heroFadedIn, setHeroFadedIn] = useState(false);
   const { addItem } = useCart();
+
+  useEffect(() => {
+    // If intro was already seen in this session, show hero immediately
+    try {
+      if (typeof window !== 'undefined' && sessionStorage.getItem('dcc_intro_seen') === 'true') {
+        setHeroFadedIn(true);
+        return;
+      }
+    } catch {
+      setHeroFadedIn(true);
+      return;
+    }
+
+    const onPreloaderComplete = () => {
+      setHeroFadedIn(true);
+    };
+
+    window.addEventListener('dcc-preloader-complete', onPreloaderComplete);
+    return () => window.removeEventListener('dcc-preloader-complete', onPreloaderComplete);
+  }, []);
 
   // Interactive savings calculator state
   const [dailyDishes, setDailyDishes] = useState(400);
@@ -30,18 +50,14 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Full-screen Preloader linked to actual image buffer */}
-      <Preloader
-        progress={loadProgress}
-        isLoaded={isAssetsLoaded}
-      />
-
-      {/* 300vh Sticky Center Scroll Sequence */}
-      <ScrollSequenceSection
-        onProgress={(p) => setLoadProgress(p)}
-        onLoaded={() => setIsAssetsLoaded(true)}
-        onOpenB2B={() => setB2bModalOpen(true)}
-      />
+      {/* 300vh Sticky Center Scroll Sequence with subtle reveal fade-up */}
+      <div className={heroFadedIn ? 'animate-hero-fadeup' : 'transition-opacity duration-700'}>
+        <ScrollSequenceSection
+          onProgress={(p) => setLoadProgress(p)}
+          onLoaded={() => setIsAssetsLoaded(true)}
+          onOpenB2B={() => setB2bModalOpen(true)}
+        />
+      </div>
 
       {/* Marquee Banner Section */}
       <Marquee
