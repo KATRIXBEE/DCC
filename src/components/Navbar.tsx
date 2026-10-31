@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ShoppingBag, Menu, X, ArrowUpRight } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { B2BModal } from './B2BModal';
+import { ScrambleHoverText } from '@/lib/scramble';
 
 export const Navbar: React.FC = () => {
   const { totalItems, openCart } = useCart();
@@ -37,25 +38,25 @@ export const Navbar: React.FC = () => {
               </Link>
             </div>
 
-            {/* Desktop Navigation Links */}
+            {/* Desktop Navigation Links with Scramble Hover */}
             <nav className="hidden md:flex items-stretch font-mono text-sm uppercase font-bold tracking-wider">
               <Link
                 href="/shop"
                 className="flex items-center px-6 border-l-4 border-black hover:bg-[#FFDE00] transition-colors"
               >
-                SHOP
+                <ScrambleHoverText text="SHOP" />
               </Link>
               <Link
                 href="/science"
                 className="flex items-center px-6 border-l-4 border-black hover:bg-[#8A9A5B] hover:text-white transition-colors"
               >
-                SCIENCE
+                <ScrambleHoverText text="SCIENCE" />
               </Link>
               <button
                 onClick={() => setB2bModalOpen(true)}
                 className="flex items-center px-6 border-l-4 border-black hover:bg-black hover:text-[#FFDE00] transition-colors cursor-pointer"
               >
-                B2B SWAP
+                <ScrambleHoverText text="B2B SWAP" />
               </button>
             </nav>
 
@@ -84,7 +85,7 @@ export const Navbar: React.FC = () => {
                   onClick={() => setB2bModalOpen(true)}
                   className="bg-[#FFDE00] text-black px-6 flex items-center gap-2 font-mono text-xs md:text-sm font-bold uppercase hover:bg-black hover:text-[#FFDE00] transition-colors cursor-pointer select-none"
                 >
-                  <span>START A PROJECT</span>
+                  <ScrambleHoverText text="START A PROJECT" />
                   <ArrowUpRight className="w-4 h-4" />
                 </button>
               </div>
@@ -109,14 +110,14 @@ export const Navbar: React.FC = () => {
               onClick={() => setMobileMenuOpen(false)}
               className="block p-4 hover:bg-[#FFDE00]"
             >
-              SHOP CONCENTRATE (₹169)
+              <ScrambleHoverText text="SHOP CONCENTRATE (₹169)" />
             </Link>
             <Link
               href="/science"
               onClick={() => setMobileMenuOpen(false)}
               className="block p-4 hover:bg-[#8A9A5B]"
             >
-              SCIENCE & LAB LOGS
+              <ScrambleHoverText text="SCIENCE & LAB LOGS" />
             </Link>
             <button
               onClick={() => {
@@ -125,7 +126,7 @@ export const Navbar: React.FC = () => {
               }}
               className="w-full text-left p-4 hover:bg-black hover:text-[#FFDE00] cursor-pointer"
             >
-              B2B KITCHEN SWAP (FREE DEMO)
+              <ScrambleHoverText text="B2B KITCHEN SWAP (FREE DEMO)" />
             </button>
             <button
               onClick={() => {
