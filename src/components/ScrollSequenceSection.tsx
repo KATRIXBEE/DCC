@@ -350,10 +350,11 @@ export const ScrollSequenceSection: React.FC<ScrollSequenceSectionProps> = ({
             </p>
 
             <div className="flex items-center gap-3">
-              <Link href="/shop">
-                <GlitchButton variant="yellow" size="md">
-                  EXPLORE BATCH 001 [₹169] →
-                </GlitchButton>
+              <Link
+                href="/shop"
+                className="relative inline-flex items-center justify-center border-4 border-black rounded-none transition-all duration-150 active:translate-x-[2px] active:translate-y-[2px] cursor-pointer select-none bg-[#FFDE00] text-black hover:bg-black hover:text-[#FFDE00] shadow-[4px_4px_0px_0px_#000000] px-6 py-3.5 text-sm md:text-base font-mono uppercase tracking-wider font-bold"
+              >
+                EXPLORE BATCH 001 [₹169] →
               </Link>
               <div className="hidden sm:flex items-center gap-2 text-xs font-mono font-bold text-neutral-500 animate-pulse">
                 <ArrowDown className="w-4 h-4" />
@@ -503,10 +504,11 @@ export const ScrollSequenceSection: React.FC<ScrollSequenceSectionProps> = ({
                   >
                     + ADD TO DISPATCH CART
                   </button>
-                  <Link href="/shop" className="flex-1">
-                    <button className="w-full bg-white text-black border-2 border-black py-3 px-4 font-mono font-bold text-xs uppercase hover:bg-black hover:text-white transition-colors">
-                      VIEW FULL SPECS →
-                    </button>
+                  <Link
+                    href="/shop"
+                    className="flex-1 bg-white text-black border-2 border-black py-3 px-4 font-mono font-bold text-xs uppercase hover:bg-black hover:text-white transition-colors text-center flex items-center justify-center cursor-pointer"
+                  >
+                    VIEW FULL SPECS →
                   </Link>
                 </div>
               </div>

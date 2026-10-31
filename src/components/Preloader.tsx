@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import { PRELOADER_CONFIG } from '@/lib/scramble';
 
 /**
@@ -24,6 +25,8 @@ interface CharState {
 }
 
 export const Preloader: React.FC = () => {
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
   const [isMounted, setIsMounted] = useState<boolean>(true);
   const [phase, setPhase] = useState<'initial' | 'scrambling' | 'decoded' | 'morphing' | 'logo' | 'exiting' | 'done'>('initial');
   const [charStates, setCharStates] = useState<CharState[]>(() =>
@@ -209,6 +212,14 @@ export const Preloader: React.FC = () => {
   }, [addTimer, clearAllTimers, finishPreloader]);
 
   useEffect(() => {
+    if (!isHomePage) {
+      if (typeof document !== 'undefined') {
+        document.body.style.overflow = '';
+      }
+      setIsMounted(false);
+      return;
+    }
+
     // Check reduced motion
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (reducedMotionQuery.matches) {
@@ -250,9 +261,9 @@ export const Preloader: React.FC = () => {
       clearAllTimers();
       document.body.style.overflow = '';
     };
-  }, [finishPreloader, runSequence, clearAllTimers]);
+  }, [finishPreloader, runSequence, clearAllTimers, isHomePage]);
 
-  if (!isMounted) return null;
+  if (!isMounted || !isHomePage) return null;
 
   return (
     <div

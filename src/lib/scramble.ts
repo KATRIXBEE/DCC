@@ -195,64 +195,56 @@ export function useScrambleHover(
   initialText: string,
   duration = PRELOADER_CONFIG.hoverScrambleDurationMs
 ) {
-  const elRef = useRef<HTMLElement | null>(null);
+  const [displayText, setDisplayText] = useState(initialText);
   const handleRef = useRef<ScrambleHandle | null>(null);
 
   const trigger = useCallback(() => {
     handleRef.current?.stop();
-    if (elRef.current) {
-      handleRef.current = scrambleText(elRef.current, initialText, {
-        duration,
-        sequentialLock: true,
-        onComplete: () => {
-          if (elRef.current) elRef.current.textContent = initialText;
-        },
-      });
-    }
+    handleRef.current = scrambleText(null, initialText, {
+      duration,
+      sequentialLock: true,
+      onUpdate: (currentText) => {
+        setDisplayText(currentText);
+      },
+      onComplete: () => {
+        setDisplayText(initialText);
+      },
+    });
   }, [initialText, duration]);
 
   const reset = useCallback(() => {
     handleRef.current?.stop();
-    if (elRef.current) elRef.current.textContent = initialText;
+    setDisplayText(initialText);
   }, [initialText]);
 
   useEffect(() => {
-    const el = elRef.current;
-    if (!el) return;
-    el.textContent = initialText;
-
-    const handleMouseEnter = () => trigger();
-    const handleMouseLeave = () => reset();
-
-    el.addEventListener('mouseenter', handleMouseEnter);
-    el.addEventListener('mouseleave', handleMouseLeave);
-
+    setDisplayText(initialText);
     return () => {
       handleRef.current?.stop();
-      el.removeEventListener('mouseenter', handleMouseEnter);
-      el.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, [initialText, trigger, reset]);
+  }, [initialText]);
 
-  return { elRef, trigger, reset };
+  return { displayText, trigger, reset };
 }
 
 /**
  * Reusable wrapper for scramble-on-hover text labels.
+ * Designed with pointer-events-none so click events always reach parent Links/Buttons.
  */
 export const ScrambleHoverText: React.FC<{
   text: string;
   duration?: number;
   className?: string;
 }> = ({ text, duration = PRELOADER_CONFIG.hoverScrambleDurationMs, className = '' }) => {
-  const { elRef } = useScrambleHover(text, duration);
+  const { displayText, trigger, reset } = useScrambleHover(text, duration);
   return React.createElement(
     'span',
     {
-      ref: elRef,
-      className: `inline-block select-none ${className}`,
+      onMouseEnter: trigger,
+      onMouseLeave: reset,
+      className: `inline-block select-none pointer-events-none ${className}`,
     },
-    text
+    displayText
   );
 };
 

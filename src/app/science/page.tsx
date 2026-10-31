@@ -383,10 +383,11 @@ export default function SciencePage() {
           </div>
 
           <div className="mt-12 text-center">
-            <Link href="/shop">
-              <GlitchButton variant="yellow" size="lg">
-                TEST BATCH 001 IN YOUR SINK [₹169] →
-              </GlitchButton>
+            <Link
+              href="/shop"
+              className="relative inline-flex items-center justify-center border-4 border-black rounded-none transition-all duration-150 active:translate-x-[2px] active:translate-y-[2px] cursor-pointer select-none bg-[#FFDE00] text-black hover:bg-black hover:text-[#FFDE00] shadow-[4px_4px_0px_0px_#000000] px-8 py-5 text-base md:text-lg font-heading uppercase tracking-wide"
+            >
+              TEST BATCH 001 IN YOUR SINK [₹169] →
             </Link>
           </div>
         </div>

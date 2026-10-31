@@ -152,6 +152,15 @@ export const BottleAnimation: React.FC<BottleAnimationProps> = ({
         processedCanvases[frameIdx] = offCanvas;
         loadedCount++;
 
+        // Render frame 0 immediately as soon as it is processed so the bottle displays without delay
+        if (frameIdx === 0 && !processedFramesRef.current[0]) {
+          processedFramesRef.current[0] = offCanvas;
+          requestAnimationFrame(() => {
+            resizeCanvas();
+            renderFrame(0);
+          });
+        }
+
         const pct = Math.floor((loadedCount / totalFrames) * 100);
         if (onProgress) onProgress(pct);
 
