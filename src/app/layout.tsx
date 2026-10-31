@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Archivo_Black, JetBrains_Mono, Space_Mono } from 'next/font/google';
+import { Archivo_Black, JetBrains_Mono } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
@@ -7,7 +7,6 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { WhatsAppFAB } from '@/components/WhatsAppFAB';
 import { CartDrawer } from '@/components/CartDrawer';
-import { Preloader } from '@/components/Preloader';
 
 const archivoBlack = Archivo_Black({
   weight: '400',
@@ -17,16 +16,8 @@ const archivoBlack = Archivo_Black({
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  weight: ['400', '700', '800'],
   subsets: ['latin'],
   variable: '--font-jetbrains',
-  display: 'swap',
-});
-
-const spaceMono = Space_Mono({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  variable: '--font-spacemono',
   display: 'swap',
 });
 
@@ -54,19 +45,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${archivoBlack.variable} ${jetbrainsMono.variable} ${spaceMono.variable}`}>
+    <html lang="en" className={`${archivoBlack.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>" />
-        {/* Anti-flash script: immediately hides preloader on subsequent visits in the same session */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{if(sessionStorage.getItem('dcc_intro_seen')==='true'){document.documentElement.classList.add('dcc-preloader-skip');}}catch(e){}})();`,
-          }}
-        />
       </head>
       <body className="min-h-screen flex flex-col bg-white text-black font-mono antialiased selection:bg-[#FFDE00] selection:text-black">
-        {/* Critical full-screen preloader rendered in initial SSR HTML */}
-        <Preloader />
         <CartProvider>
           <Navbar />
           <CartDrawer />
